@@ -1,0 +1,23 @@
+name: Deploy Green Impact HTML Project
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH and Deploy HTML
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd /var/www/green-impact/green-impact
+
+            # Force latest code
+            git fetch origin
+            git reset --hard origin/main
