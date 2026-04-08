@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Green Impact — An Initiative by Startup Times</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700;1,9..144,900&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --black:#070c07;
+  --deep:#0d150d;
+  --forest:#1a2e1a;
+  --moss:#2d4a2d;
+  --green:#4a8a3a;
+  --leaf:#6dbf5a;
+  --lime:#9fd86a;
+  --glow:#c5f087;
+  --white:#f4f9f0;
+  --offwhite:#dcebd5;
+  --muted:#8aad7e;
+  --red:#c0392b;
+  --amber:#e67e22;
+  --gold:#f1c40f;
+}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--black);
+  color:var(--white);
+  font-family:'Instrument Sans',sans-serif;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ── CURSOR ── */
+.cursor{
+  width:12px;height:12px;
+  background:var(--lime);
+  border-radius:50%;
+  position:fixed;top:0;left:0;
+  pointer-events:none;z-index:9999;
+  transition:transform 0.15s,background 0.3s;
+  mix-blend-mode:difference;
+}
+.cursor-ring{
+  width:36px;height:36px;
+  border:1px solid rgba(197,240,135,0.5);
+  border-radius:50%;
+  position:fixed;top:0;left:0;
+  pointer-events:none;z-index:9998;
+  transition:transform 0.4s cubic-bezier(0.23,1,0.32,1);
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  z-index:100;
+  padding:20px 48px;
+  display:flex;justify-content:space-between;align-items:center;
+  background:linear-gradient(to bottom,rgba(7,12,7,0.9) 0%,transparent 100%);
+  backdrop-filter:blur(2px);
+}
+.nav-logo{
+  font-family:'Fraunces',serif;
+  font-size:22px;font-weight:900;
+  color:var(--lime);
+  letter-spacing:-0.5px;
+}
+.nav-logo span{
+  font-size:10px;font-weight:300;
+  color:var(--muted);
+  letter-spacing:3px;text-transform:uppercase;
+  display:block;margin-top:-4px;
+}
+.nav-cta{
+  background:var(--lime);
+  color:var(--black);
+  padding:10px 24px;
+  border:none;border-radius:100px;
+  font-family:'Instrument Sans',sans-serif;
+  font-size:13px;font-weight:600;
+  letter-spacing:0.5px;
+  cursor:none;
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.nav-cta:hover{transform:scale(1.05);box-shadow:0 0 24px rgba(197,240,135,0.4);}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+  padding:0 48px 80px;
+  position:relative;overflow:hidden;
+}
+
+/* Animated particle bg */
+.particles{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 100% 80% at 50% 0%, rgba(74,138,58,0.18) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(109,191,90,0.06) 0%,transparent 50%);
+}
+.particle{
+  position:absolute;
+  background:var(--lime);
+  border-radius:50%;
+  animation:float linear infinite;
+  opacity:0;
+}
+@keyframes float{
+  0%{transform:translateY(100vh) scale(0);opacity:0;}
+  10%{opacity:0.6;}
+  90%{opacity:0.2;}
+  100%{transform:translateY(-100px) scale(1);opacity:0;}
+}
+
+.hero-tag{
+  font-size:11px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--leaf);margin-bottom:24px;
+  opacity:0;animation:fadeUp 0.8s 0.3s forwards;
+}
+.hero-tag span{
+  background:rgba(74,138,58,0.2);
+  border:1px solid rgba(109,191,90,0.3);
+  padding:6px 16px;border-radius:100px;
+}
+
+.hero h1{
+  font-family:'Fraunces',serif;
+  font-size:clamp(44px,9vw,120px);
+  font-weight:900;line-height:0.92;
+  letter-spacing:-3px;
+  max-width:900px;
+  opacity:0;animation:fadeUp 1s 0.5s forwards;
+}
+.hero h1 .line2{color:var(--lime);}
+.hero h1 .line3{
+  font-style:italic;font-weight:300;
+  color:var(--muted);font-size:0.65em;
+}
+
+.hero-bottom{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-top:48px;
+  opacity:0;animation:fadeUp 0.9s 0.8s forwards;
+}
+.hero-desc{
+  font-size:17px;font-weight:300;
+  color:var(--offwhite);line-height:1.7;
+  max-width:460px;
+}
+.hero-stats-mini{
+  display:flex;gap:40px;text-align:right;
+}
+.hstat-val{
+  font-family:'Fraunces',serif;
+  font-size:38px;font-weight:900;
+  color:var(--lime);display:block;line-height:1;
+}
+.hstat-lbl{
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);margin-top:4px;display:block;
+}
+
+/* ── SCROLL TRIGGER REVEAL ── */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.reveal.in{opacity:1;transform:none;}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.reveal-left.in{opacity:1;transform:none;}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.reveal-right.in{opacity:1;transform:none;}
+
+/* ── SECTION BASE ── */
+.section{padding:120px 48px;max-width:1200px;margin:0 auto;}
+.section-label{
+  font-size:10px;letter-spacing:5px;text-transform:uppercase;
+  color:var(--leaf);margin-bottom:16px;display:block;
+}
+h2.big{
+  font-family:'Fraunces',serif;
+  font-size:clamp(32px,5vw,64px);
+  font-weight:900;line-height:1.1;
+  letter-spacing:-1.5px;
+  margin-bottom:24px;
+}
+h2.big em{font-style:italic;color:var(--lime);}
+
+/* ── CRISIS SECTION ── */
+.crisis{
+  background:var(--deep);
+  padding:0;
+  position:relative;overflow:hidden;
+}
+.crisis-inner{
+  max-width:1200px;margin:0 auto;
+  padding:120px 48px;
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+}
+.crisis-left h2{
+  font-family:'Fraunces',serif;
+  font-size:clamp(36px,5vw,72px);
+  font-weight:900;line-height:1.0;
+  letter-spacing:-2px;
+  margin-bottom:32px;
+}
+.crisis-left h2 .red{color:var(--red);}
+.crisis-left h2 .amber{color:var(--amber);}
+.crisis-left p{
+  font-size:17px;font-weight:300;
+  color:var(--offwhite);line-height:1.85;margin-bottom:20px;
+}
+.crisis-left p strong{color:var(--white);font-weight:600;}
+
+.death-counter{
+  background:rgba(192,57,43,0.1);
+  border:1px solid rgba(192,57,43,0.3);
+  border-radius:16px;padding:32px;
+  margin-top:40px;
+}
+.dc-label{
+  font-size:11px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--red);margin-bottom:12px;display:block;
+}
+.dc-number{
+  font-family:'Fraunces',serif;
+  font-size:64px;font-weight:900;
+  color:var(--red);line-height:1;
+  display:block;
+}
+.dc-desc{font-size:14px;color:rgba(255,255,255,0.5);margin-top:8px;}
+
+.crisis-right{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;
+}
+.crisis-card{
+  background:rgba(26,46,26,0.6);
+  border:1px solid rgba(74,138,58,0.2);
+  border-radius:16px;padding:28px;
+  transition:transform 0.3s,border-color 0.3s;
+}
+.crisis-card:hover{transform:translateY(-4px);border-color:rgba(109,191,90,0.4);}
+.crisis-card.full{grid-column:span 2;}
+.cc-icon{font-size:36px;margin-bottom:12px;display:block;}
+.cc-num{
+  font-family:'Fraunces',serif;
+  font-size:32px;font-weight:900;
+  color:var(--amber);display:block;line-height:1;
+}
+.cc-text{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5;}
+
+/* ── IMPACT COUNTER BAND ── */
+.impact-band{
+  background:linear-gradient(135deg,var(--forest) 0%,var(--moss) 100%);
+  padding:80px 48px;
+  position:relative;overflow:hidden;
+}
+.impact-band::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234a8a3a' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.impact-band-inner{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:40px;
+  position:relative;
+}
+.impact-stat{text-align:center;}
+.is-num{
+  font-family:'Fraunces',serif;
+  font-size:clamp(40px,5vw,72px);
+  font-weight:900;color:var(--glow);
+  display:block;line-height:1;
+}
+.is-unit{font-size:0.5em;color:var(--lime);}
+.is-label{
+  font-size:12px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--offwhite);
+  margin-top:8px;display:block;
+}
+.is-sub{font-size:12px;color:var(--muted);margin-top:4px;}
+
+/* ── HOW IT WORKS ── */
+.how-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+  background:rgba(74,138,58,0.1);
+  border:1px solid rgba(74,138,58,0.2);
+  border-radius:20px;overflow:hidden;
+  margin-top:60px;
+}
+.how-step{
+  padding:48px 36px;
+  background:var(--deep);
+  transition:background 0.3s;
+  position:relative;
+}
+.how-step:hover{background:rgba(26,46,26,0.8);}
+.how-num{
+  font-family:'Fraunces',serif;
+  font-size:80px;font-weight:900;
+  color:rgba(109,191,90,0.1);
+  line-height:1;position:absolute;
+  top:24px;right:24px;
+}
+.how-icon{font-size:40px;margin-bottom:20px;display:block;}
+.how-step h3{
+  font-family:'Fraunces',serif;
+  font-size:22px;font-weight:700;
+  color:var(--white);margin-bottom:12px;
+}
+.how-step p{font-size:14px;color:var(--muted);line-height:1.7;}
+.how-step .how-tag{
+  display:inline-block;
+  background:rgba(109,191,90,0.1);
+  border:1px solid rgba(109,191,90,0.25);
+  color:var(--leaf);
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  padding:4px 12px;border-radius:100px;
+  margin-top:16px;
+}
+
+/* ── WHO JOINS ── */
+.who-section{background:var(--deep);}
+.who-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
+  margin-top:60px;
+}
+.who-card{
+  background:var(--forest);
+  border:1px solid rgba(74,138,58,0.2);
+  border-radius:20px;padding:40px 28px;
+  text-align:center;
+  transition:transform 0.3s,box-shadow 0.3s;
+  cursor:none;
+}
+.who-card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 24px 60px rgba(74,138,58,0.2);
+}
+.who-emoji{font-size:52px;display:block;margin-bottom:20px;}
+.who-card h3{
+  font-family:'Fraunces',serif;
+  font-size:22px;font-weight:700;
+  color:var(--white);margin-bottom:10px;
+}
+.who-card p{font-size:13px;color:var(--muted);line-height:1.6;}
+.who-count{
+  font-family:'Fraunces',serif;
+  font-size:28px;font-weight:900;
+  color:var(--lime);margin-top:16px;display:block;
+}
+
+/* ── HERO PROGRAM ── */
+.hero-program{
+  background:linear-gradient(160deg,var(--forest) 0%,var(--black) 100%);
+  padding:120px 48px;
+  position:relative;overflow:hidden;
+}
+.hero-program::before{
+  content:'🌟';
+  font-size:400px;
+  position:absolute;right:-80px;top:-80px;
+  opacity:0.04;
+  line-height:1;
+}
+.hero-program-inner{max-width:1200px;margin:0 auto;}
+
+.levels-row{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+  margin-top:60px;
+}
+.level-card{
+  border-radius:20px;padding:36px 28px;
+  position:relative;overflow:hidden;
+  transition:transform 0.3s;
+}
+.level-card:hover{transform:translateY(-6px);}
+.level-card.bronze{background:linear-gradient(160deg,#3d2b1f,#5c3d2a);border:1px solid rgba(162,96,51,0.4);}
+.level-card.silver{background:linear-gradient(160deg,#2a2a35,#3d3d52);border:1px solid rgba(148,162,188,0.4);}
+.level-card.gold{background:linear-gradient(160deg,#352a10,#4a3b15);border:1px solid rgba(201,162,39,0.5);}
+.level-card.platinum{background:linear-gradient(160deg,#1a2e2e,#1f3d3d);border:1px solid rgba(109,191,181,0.5);}
+
+.level-badge{
+  font-size:48px;margin-bottom:16px;display:block;
+}
+.level-name{
+  font-family:'Fraunces',serif;
+  font-size:20px;font-weight:900;
+  margin-bottom:4px;
+}
+.level-card.bronze .level-name{color:#cd7f32;}
+.level-card.silver .level-name{color:#94a2bc;}
+.level-card.gold .level-name{color:#c9a227;}
+.level-card.platinum .level-name{color:#6dbfb5;}
+
+.level-pts{
+  font-size:12px;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,0.4);margin-bottom:16px;
+}
+.level-perk{
+  font-size:13px;color:rgba(255,255,255,0.6);
+  line-height:1.7;
+}
+.level-perk li{list-style:none;padding:4px 0;}
+.level-perk li::before{content:'✓ ';color:var(--leaf);}
+
+/* ── CERTIFICATE PREVIEW ── */
+.cert-section{
+  padding:120px 48px;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;
+  background:var(--black);
+}
+.cert-preview{
+  width:100%;max-width:700px;
+  background:linear-gradient(135deg,#0d1f0d 0%,#0d150d 100%);
+  border:2px solid rgba(197,240,135,0.3);
+  border-radius:24px;
+  padding:60px;
+  margin-top:60px;
+  position:relative;
+  box-shadow:
+    0 0 0 1px rgba(197,240,135,0.1),
+    0 40px 80px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(197,240,135,0.1);
+}
+.cert-preview::before,.cert-preview::after{
+  content:'';
+  position:absolute;
+  width:60px;height:60px;
+  border-color:var(--lime);border-style:solid;
+  opacity:0.4;
+}
+.cert-preview::before{top:20px;left:20px;border-width:2px 0 0 2px;}
+.cert-preview::after{bottom:20px;right:20px;border-width:0 2px 2px 0;}
+
+.cert-logo{font-size:14px;letter-spacing:6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.cert-org{
+  font-family:'Fraunces',serif;
+  font-size:28px;font-weight:900;color:var(--lime);
+  margin-bottom:32px;
+}
+.cert-title{
+  font-family:'Fraunces',serif;
+  font-size:14px;font-weight:300;
+  letter-spacing:4px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:16px;
+}
+.cert-name{
+  font-family:'Fraunces',serif;
+  font-size:48px;font-weight:900;
+  font-style:italic;color:var(--white);
+  border-bottom:1px solid rgba(197,240,135,0.2);
+  padding-bottom:20px;margin-bottom:20px;
+  line-height:1.2;
+}
+.cert-body{
+  font-size:15px;color:var(--muted);
+  line-height:1.8;margin-bottom:28px;
+}
+.cert-body strong{color:var(--lime);}
+.cert-seal{
+  width:80px;height:80px;
+  background:linear-gradient(135deg,var(--moss),var(--green));
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;
+  margin:0 auto 20px;
+  box-shadow:0 0 32px rgba(109,191,90,0.3);
+}
+.cert-footer{
+  font-size:11px;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,0.2);
+}
+
+/* ── TESTIMONIALS ── */
+.testimonials{
+  background:var(--deep);
+  padding:120px 48px;
+}
+.testimonials-inner{max-width:1200px;margin:0 auto;}
+.testi-grid{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;
+  margin-top:60px;
+}
+.testi-card{
+  background:var(--forest);
+  border:1px solid rgba(74,138,58,0.2);
+  border-radius:20px;padding:36px;
+  position:relative;
+}
+.testi-card::before{
+  content:'"';
+  font-family:'Fraunces',serif;
+  font-size:100px;font-weight:900;
+  color:rgba(109,191,90,0.1);
+  position:absolute;top:-10px;left:24px;
+  line-height:1;
+}
+.testi-text{
+  font-family:'Fraunces',serif;
+  font-size:18px;font-style:italic;font-weight:300;
+  color:var(--white);line-height:1.6;
+  margin-bottom:24px;
+}
+.testi-person{display:flex;align-items:center;gap:16px;}
+.testi-avatar{
+  width:48px;height:48px;border-radius:50%;
+  background:var(--moss);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;
+}
+.testi-name{font-size:14px;font-weight:600;color:var(--white);}
+.testi-org{font-size:12px;color:var(--muted);}
+.testi-points{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(109,191,90,0.1);
+  border:1px solid rgba(109,191,90,0.2);
+  color:var(--leaf);
+  font-size:11px;letter-spacing:1px;
+  padding:4px 12px;border-radius:100px;
+  margin-top:8px;
+}
+
+/* ── CTA REGISTER ── */
+.cta-section{
+  padding:120px 48px;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.cta-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(74,138,58,0.2) 0%,transparent 70%);
+}
+.cta-section h2{
+  font-family:'Fraunces',serif;
+  font-size:clamp(40px,7vw,96px);
+  font-weight:900;line-height:0.95;
+  letter-spacing:-3px;
+  margin-bottom:28px;
+  position:relative;
+}
+.cta-section h2 em{font-style:italic;color:var(--lime);}
+.cta-section p{
+  font-size:19px;font-weight:300;
+  color:var(--offwhite);max-width:560px;
+  margin:0 auto 48px;line-height:1.7;
+  position:relative;
+}
+
+.cta-form{
+  display:flex;flex-direction:column;
+  align-items:center;gap:16px;
+  position:relative;
+}
+.form-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+.form-input{
+  background:rgba(26,46,26,0.6);
+  border:1px solid rgba(74,138,58,0.35);
+  color:var(--white);
+  padding:16px 24px;
+  border-radius:100px;
+  font-family:'Instrument Sans',sans-serif;
+  font-size:15px;
+  outline:none;
+  min-width:240px;
+  transition:border-color 0.3s;
+}
+.form-input::placeholder{color:var(--muted);}
+.form-input:focus{border-color:var(--lime);}
+
+.form-select{
+  background:rgba(26,46,26,0.6);
+  border:1px solid rgba(74,138,58,0.35);
+  color:var(--white);
+  padding:16px 24px;
+  border-radius:100px;
+  font-family:'Instrument Sans',sans-serif;
+  font-size:15px;
+  outline:none;
+  cursor:none;
+  transition:border-color 0.3s;
+  appearance:none;
+  min-width:200px;
+}
+.form-select option{background:var(--forest);}
+.form-select:focus{border-color:var(--lime);}
+
+.btn-register{
+  background:linear-gradient(135deg,var(--leaf),var(--lime));
+  color:var(--black);
+  border:none;
+  padding:20px 56px;
+  border-radius:100px;
+  font-family:'Instrument Sans',sans-serif;
+  font-size:16px;font-weight:700;
+  letter-spacing:0.5px;
+  cursor:none;
+  transition:transform 0.2s,box-shadow 0.3s;
+  box-shadow:0 0 0 rgba(197,240,135,0);
+}
+.btn-register:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 40px rgba(197,240,135,0.35);
+}
+
+.form-note{
+  font-size:13px;color:var(--muted);
+  display:flex;align-items:center;gap:8px;
+}
+.form-note::before{content:'🔒';font-size:14px;}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--deep);
+  border-top:1px solid rgba(74,138,58,0.15);
+  padding:60px 48px;
+  display:flex;justify-content:space-between;align-items:center;
+  max-width:100%;
+}
+.footer-brand{
+  font-family:'Fraunces',serif;
+  font-size:20px;font-weight:900;color:var(--lime);
+}
+.footer-brand span{
+  font-size:12px;font-weight:300;
+  color:var(--muted);letter-spacing:2px;
+  text-transform:uppercase;display:block;
+  margin-top:2px;
+}
+.footer-right{
+  font-size:13px;color:var(--muted);text-align:right;
+  line-height:1.8;
+}
+.footer-right a{color:var(--leaf);text-decoration:none;}
+
+/* ── MARQUEE ── */
+.marquee-wrap{
+  overflow:hidden;
+  background:var(--forest);
+  padding:20px 0;
+  border-top:1px solid rgba(74,138,58,0.2);
+  border-bottom:1px solid rgba(74,138,58,0.2);
+}
+.marquee-inner{
+  display:flex;gap:0;
+  animation:marquee 30s linear infinite;
+  width:max-content;
+}
+.marquee-item{
+  font-family:'Fraunces',serif;
+  font-size:14px;font-weight:700;
+  color:var(--muted);
+  padding:0 40px;
+  white-space:nowrap;
+  letter-spacing:1px;
+}
+.marquee-item span{color:var(--lime);}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px);}
+  to{opacity:1;transform:none;}
+}
+
+/* ── COUNTER ANIMATION ── */
+.count-up{display:inline-block;}
+
+/* ── MOBILE ── */
+@media(max-width:900px){
+  nav{padding:16px 24px;}
+  .hero{padding:0 24px 60px;}
+  .hero-bottom{flex-direction:column;gap:32px;align-items:flex-start;}
+  .hero-stats-mini{text-align:left;}
+  .section{padding:80px 24px;}
+  .crisis-inner{grid-template-columns:1fr;padding:80px 24px;}
+  .impact-band{padding:60px 24px;}
+  .impact-band-inner{grid-template-columns:repeat(2,1fr);}
+  .how-grid{grid-template-columns:1fr;}
+  .who-grid{grid-template-columns:repeat(2,1fr);}
+  .levels-row{grid-template-columns:repeat(2,1fr);}
+  .testi-grid{grid-template-columns:1fr;}
+  .cert-section,.hero-program,.cta-section,.testimonials{padding:80px 24px;}
+  footer{flex-direction:column;gap:24px;text-align:center;padding:40px 24px;}
+  .footer-right{text-align:center;}
+  .form-row{flex-direction:column;align-items:center;}
+  .form-input,.form-select{min-width:280px;width:100%;max-width:400px;}
+  .cert-preview{padding:40px 28px;}
+  .cert-name{font-size:36px;}
+}
+@media(max-width:600px){
+  .who-grid{grid-template-columns:1fr;}
+  .levels-row{grid-template-columns:1fr;}
+  .impact-band-inner{grid-template-columns:1fr 1fr;}
+  .crisis-right{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">
+    Green Impact
+    <span>An Initiative by Startup Times</span>
+  </div>
+  <button class="nav-cta" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">Join the Movement</button>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="particles" id="particles"></div>
+  <p class="hero-tag"><span>🌍 India's Largest Green Collective</span></p>
+  <h1>
+    The Earth<br>
+    <span class="line2">is dying.</span><br>
+    <span class="line3">Will you be the one who saved it?</span>
+  </h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">Every charger you throw away. Every bottle you ignore. Every paper you burn. It adds up — into a crisis that is costing lives. <strong>But together, we've already started fighting back.</strong></p>
+    <div class="hero-stats-mini">
+      <div>
+        <span class="hstat-val"><span class="count-up" data-target="52847">0</span></span>
+        <span class="hstat-lbl">KG Recycled</span>
+      </div>
+      <div>
+        <span class="hstat-val"><span class="count-up" data-target="3241">0</span>+</span>
+        <span class="hstat-lbl">Green Heroes</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-wrap">
+  <div class="marquee-inner" id="marquee">
+    <span class="marquee-item">🌱 52,847 kg Waste Recycled <span>✦</span></span>
+    <span class="marquee-item">♻️ 34 Tonnes Saved from Landfills <span>✦</span></span>
+    <span class="marquee-item">🏭 127 Tonnes CO₂ Emissions Prevented <span>✦</span></span>
+    <span class="marquee-item">🏆 3,241 Certified Green Heroes <span>✦</span></span>
+    <span class="marquee-item">🏫 218 Schools & Colleges Joined <span>✦</span></span>
+    <span class="marquee-item">🏢 156 Corporates Onboard <span>✦</span></span>
+    <span class="marquee-item">🌱 52,847 kg Waste Recycled <span>✦</span></span>
+    <span class="marquee-item">♻️ 34 Tonnes Saved from Landfills <span>✦</span></span>
+    <span class="marquee-item">🏭 127 Tonnes CO₂ Emissions Prevented <span>✦</span></span>
+    <span class="marquee-item">🏆 3,241 Certified Green Heroes <span>✦</span></span>
+    <span class="marquee-item">🏫 218 Schools & Colleges Joined <span>✦</span></span>
+    <span class="marquee-item">🏢 156 Corporates Onboard <span>✦</span></span>
+  </div>
+</div>
+
+<!-- ── CRISIS ── -->
+<div class="crisis">
+  <div class="crisis-inner">
+    <div class="crisis-left reveal-left">
+      <h2>
+        Every<br>
+        <span class="red">7 seconds,</span><br>
+        someone dies<br>from <span class="amber">pollution.</span>
+      </h2>
+      <p>Not in a movie. <strong>Right now. As you read this.</strong> A child in Delhi. A farmer in Bihar. An elderly woman in Chennai — breathing air that has quietly turned against them.</p>
+      <p>India generates <strong>9.4 million tonnes of e-waste alone</strong> every year. Most of it rots in open landfills, leaching mercury, lead, and cadmium into the soil and water that feeds us.</p>
+      <p>And the worst part? <strong>It was all preventable.</strong> If someone had simply picked it up.</p>
+      <div class="death-counter">
+        <span class="dc-label">⚠ Air Pollution Deaths in India — This Year</span>
+        <span class="dc-number" id="deathCounter">1,230,000+</span>
+        <p class="dc-desc">Source: WHO, Global Burden of Disease Study. This number grows every day.</p>
+      </div>
+    </div>
+    <div class="crisis-right reveal-right">
+      <div class="crisis-card">
+        <span class="cc-icon">🗑️</span>
+        <span class="cc-num">62MT</span>
+        <p class="cc-text">Solid waste generated in India every year. Only 20% is scientifically processed.</p>
+      </div>
+      <div class="crisis-card">
+        <span class="cc-icon">☣️</span>
+        <span class="cc-num">70%</span>
+        <p class="cc-text">Of India's surface water is contaminated — much of it from dumped electronics and plastics.</p>
+      </div>
+      <div class="crisis-card">
+        <span class="cc-icon">🌡️</span>
+        <span class="cc-num">+1.5°C</span>
+        <p class="cc-text">India's average temperature has already risen. The next 0.5° could trigger irreversible damage.</p>
+      </div>
+      <div class="crisis-card">
+        <span class="cc-icon">🧒</span>
+        <span class="cc-num">600M</span>
+        <p class="cc-text">Children under 5 exposed to hazardous air quality levels in South Asia. Every. Single. Day.</p>
+      </div>
+      <div class="crisis-card full">
+        <span class="cc-icon">💔</span>
+        <span class="cc-num" style="color:var(--red);">But here's the thing…</span>
+        <p class="cc-text" style="font-size:16px;color:var(--offwhite);margin-top:12px;line-height:1.7;">Every single one of these statistics can be changed. Not by a government policy. Not by a billionaire. By <strong style="color:var(--white);">ordinary people doing one simple thing</strong> — giving their waste a second life.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── IMPACT BAND ── -->
+<div class="impact-band">
+  <div class="impact-band-inner">
+    <div class="impact-stat reveal">
+      <span class="is-num"><span class="count-up" data-target="52847">0</span><span class="is-unit">kg</span></span>
+      <span class="is-label">Waste Recycled</span>
+      <span class="is-sub">And counting, every single day</span>
+    </div>
+    <div class="impact-stat reveal">
+      <span class="is-num"><span class="count-up" data-target="127">0</span><span class="is-unit">T</span></span>
+      <span class="is-label">CO₂ Prevented</span>
+      <span class="is-sub">Equivalent to 5,500 trees planted</span>
+    </div>
+    <div class="impact-stat reveal">
+      <span class="is-num"><span class="count-up" data-target="34">0</span><span class="is-unit">T</span></span>
+      <span class="is-label">Saved from Landfills</span>
+      <span class="is-sub">Toxic material that never hit the ground</span>
+    </div>
+    <div class="impact-stat reveal">
+      <span class="is-num"><span class="count-up" data-target="3241">0</span><span class="is-unit">+</span></span>
+      <span class="is-label">Green Heroes</span>
+      <span class="is-sub">Across schools, colleges & corporates</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── HOW IT WORKS ── -->
+<div class="section">
+  <div class="reveal">
+    <span class="section-label">The Process</span>
+    <h2 class="big">Three steps.<br><em>Infinite impact.</em></h2>
+  </div>
+  <div class="how-grid reveal">
+    <div class="how-step">
+      <span class="how-num">01</span>
+      <span class="how-icon">📅</span>
+      <h3>Book a Green Impact Day</h3>
+      <p>We come to you — your school, college, office, or society. One day. Zero disruption. We handle everything from pickup to sorting to certified recycling.</p>
+      <span class="how-tag">Free of Cost</span>
+    </div>
+    <div class="how-step">
+      <span class="how-num">02</span>
+      <span class="how-icon">♻️</span>
+      <h3>Contribute Your Waste</h3>
+      <p>Old phones, cables, paper, plastic, broken electronics — bring it all. Every gram counts. Every item is weighed, sorted, and responsibly processed. Nothing goes to landfill.</p>
+      <span class="how-tag">All Categories Accepted</span>
+    </div>
+    <div class="how-step">
+      <span class="how-num">03</span>
+      <span class="how-icon">🏆</span>
+      <h3>Earn Your Recognition</h3>
+      <p>Get your official Green Hero Certificate, earn reward points on our leaderboard, and become part of India's most passionate environmental community.</p>
+      <span class="how-tag">Certified + Rewarded</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── WHO JOINS ── -->
+<div class="who-section">
+  <div class="section">
+    <div class="reveal">
+      <span class="section-label">Who's Joining</span>
+      <h2 class="big">From playschools to<br><em>Fortune 500s.</em></h2>
+      <p style="font-size:17px;color:var(--muted);max-width:560px;line-height:1.7;margin-top:8px;">This movement belongs to everyone. Because pollution doesn't check your age, your designation, or your city before it harms you.</p>
+    </div>
+    <div class="who-grid">
+      <div class="who-card reveal">
+        <span class="who-emoji">🎒</span>
+        <h3>Schools</h3>
+        <p>Teach the next generation that responsibility begins young. Show children that their actions today shape the world they'll inherit tomorrow.</p>
+        <span class="who-count">94 Schools</span>
+      </div>
+      <div class="who-card reveal">
+        <span class="who-emoji">🎓</span>
+        <h3>Colleges & Universities</h3>
+        <p>Future leaders, engineers, and entrepreneurs learning that sustainability is not a subject — it's a habit. And habits start here.</p>
+        <span class="who-count">124 Institutions</span>
+      </div>
+      <div class="who-card reveal">
+        <span class="who-emoji">🏢</span>
+        <h3>Corporates</h3>
+        <p>ESG compliance, employee engagement, and genuine impact — all in one Green Impact Day. Your CSR that employees actually feel proud of.</p>
+        <span class="who-count">156 Companies</span>
+      </div>
+      <div class="who-card reveal">
+        <span class="who-emoji">🧸</span>
+        <h3>Playschools & Nurseries</h3>
+        <p>The earliest values stick the deepest. A child who learns to recycle at age 4 carries that gift their entire life. And so does the planet.</p>
+        <span class="who-count">47 Early Schools</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── GREEN HERO PROGRAM ── -->
+<div class="hero-program">
+  <div class="hero-program-inner">
+    <div class="reveal">
+      <span class="section-label">The Green Hero Program</span>
+      <h2 class="big">Don't just recycle.<br><em>Become a legend.</em></h2>
+      <p style="font-size:17px;color:var(--muted);max-width:560px;line-height:1.7;margin-top:8px;">Every kilogram you contribute earns you Green Points. Points unlock ranks. Ranks unlock a story you'll be proud to tell — and that your children will be proud to hear.</p>
+    </div>
+    <div class="levels-row">
+      <div class="level-card bronze reveal">
+        <span class="level-badge">🥉</span>
+        <div class="level-name">Green Starter</div>
+        <div class="level-pts">0 – 500 Points</div>
+        <ul class="level-perk">
+          <li>Digital Certificate</li>
+          <li>Green Hero Badge</li>
+          <li>Community Access</li>
+          <li>Impact Report Card</li>
+        </ul>
+      </div>
+      <div class="level-card silver reveal">
+        <span class="level-badge">🥈</span>
+        <div class="level-name">Eco Warrior</div>
+        <div class="level-pts">500 – 2000 Points</div>
+        <ul class="level-perk">
+          <li>Printed Certificate</li>
+          <li>Leaderboard Feature</li>
+          <li>Partner Discounts</li>
+          <li>Exclusive Workshops</li>
+        </ul>
+      </div>
+      <div class="level-card gold reveal">
+        <span class="level-badge">🥇</span>
+        <div class="level-name">Earth Champion</div>
+        <div class="level-pts">2000 – 5000 Points</div>
+        <ul class="level-perk">
+          <li>Trophy + Plaque</li>
+          <li>Media Feature</li>
+          <li>Startup Times Spotlight</li>
+          <li>Industry Recognition</li>
+        </ul>
+      </div>
+      <div class="level-card platinum reveal">
+        <span class="level-badge">💎</span>
+        <div class="level-name">Planet Guardian</div>
+        <div class="level-pts">5000+ Points</div>
+        <ul class="level-perk">
+          <li>Hall of Fame Entry</li>
+          <li>Annual Award Night</li>
+          <li>Brand Ambassador</li>
+          <li>Legacy Certificate</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top:48px;background:rgba(26,46,26,0.6);border:1px solid rgba(109,191,90,0.2);border-radius:20px;padding:40px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;" class="reveal">
+      <div>
+        <div style="font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--leaf);margin-bottom:8px;">How Points Work</div>
+        <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:700;color:var(--white);">1 kg Recycled = <span style="color:var(--lime);">10 Points</span></div>
+        <div style="font-size:14px;color:var(--muted);margin-top:4px;">E-waste = 2× points bonus | Organise a drive = 500 bonus points</div>
+      </div>
+      <div style="display:flex;gap:32px;flex-wrap:wrap;">
+        <div style="text-align:center;">
+          <span style="font-family:'Fraunces',serif;font-size:36px;font-weight:900;color:var(--lime);display:block;">⚡</span>
+          <span style="font-size:12px;color:var(--muted);">Instant Points</span>
+        </div>
+        <div style="text-align:center;">
+          <span style="font-family:'Fraunces',serif;font-size:36px;font-weight:900;color:var(--lime);display:block;">📜</span>
+          <span style="font-size:12px;color:var(--muted);">Auto Certificate</span>
+        </div>
+        <div style="text-align:center;">
+          <span style="font-family:'Fraunces',serif;font-size:36px;font-weight:900;color:var(--lime);display:block;">🏅</span>
+          <span style="font-size:12px;color:var(--muted);">Public Leaderboard</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CERTIFICATE ── -->
+<div class="cert-section">
+  <div class="reveal">
+    <span class="section-label">Your Certificate</span>
+    <h2 class="big">A document that says<br>you <em>actually</em> cared.</h2>
+    <p style="font-size:17px;color:var(--muted);max-width:500px;margin:0 auto;line-height:1.7;">Not a participation trophy. A verified record of the weight you contributed, the CO₂ you prevented, and the future you helped protect.</p>
+  </div>
+
+  <div class="cert-preview reveal">
+    <div class="cert-logo">Startup Times Presents</div>
+    <div class="cert-org">🌿 Green Impact Initiative</div>
+    <div class="cert-title">Certificate of Environmental Contribution</div>
+    <div class="cert-name">Sarfraz Khan</div>
+    <div class="cert-body">
+      has contributed <strong>18.4 kg</strong> of waste for certified recycling through Green Impact Day,<br>
+      preventing an estimated <strong>54 kg of CO₂</strong> from entering our atmosphere,<br>
+      and keeping <strong>18.4 kg of hazardous material</strong> away from India's landfills.
+    </div>
+    <div class="cert-seal">🌍</div>
+    <div style="font-size:14px;color:var(--lime);margin-bottom:8px;font-weight:600;">🏆 Green Starter — 184 Green Points Earned</div>
+    <div class="cert-footer">Verified by Green Impact · An Initiative by Startup Times · Certificate #GI-2026-03241</div>
+  </div>
+</div>
+
+<!-- ── TESTIMONIALS ── -->
+<div class="testimonials">
+  <div class="testimonials-inner">
+    <div class="reveal">
+      <span class="section-label">Voices from the Movement</span>
+      <h2 class="big">Real people.<br><em>Real change.</em></h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <p class="testi-text">When our students collected 340 kg in a single day, I saw something I rarely see anymore — pride. Genuine, earned pride. Green Impact gave us a reason to believe in action again.</p>
+        <div class="testi-person">
+          <div class="testi-avatar">👩‍🏫</div>
+          <div>
+            <div class="testi-name">Rekha Sharma</div>
+            <div class="testi-org">Principal, DPS Dwarka, Delhi</div>
+            <div class="testi-points">🏆 Earth Champion · 2,847 pts</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <p class="testi-text">We've done CSR drives before. This was different. Employees didn't feel like they were doing a checkbox activity. They felt like they were part of something real. The certificate on their desk says it all.</p>
+        <div class="testi-person">
+          <div class="testi-avatar">👨‍💼</div>
+          <div>
+            <div class="testi-name">Amit Verma</div>
+            <div class="testi-org">HR Head, TechBridge Solutions</div>
+            <div class="testi-points">🥇 Earth Champion · 4,210 pts</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <p class="testi-text">My 6-year-old daughter came home and told her grandmother not to throw away the old phone. "We can give it to Green Impact, Nani." I didn't teach her that. The programme did. That is priceless.</p>
+        <div class="testi-person">
+          <div class="testi-avatar">👨</div>
+          <div>
+            <div class="testi-name">Prashant Nair</div>
+            <div class="testi-org">Parent, Little Sprouts Playschool, Noida</div>
+            <div class="testi-points">🥉 Green Starter · 320 pts</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA REGISTER ── -->
+<div class="cta-section" id="register">
+  <h2 class="reveal">
+    Your waste.<br>
+    <em>Our planet.</em><br>
+    One decision.
+  </h2>
+  <p class="reveal">Book a Green Impact Day for your school, college, or office — completely free. Join 400+ organisations already making history.</p>
+
+  <div class="cta-form reveal">
+    <div class="form-row">
+      <input class="form-input" type="text" placeholder="Your Name" />
+      <input class="form-input" type="text" placeholder="Organisation Name" />
+    </div>
+    <div class="form-row">
+      <input class="form-input" type="email" placeholder="Email Address" />
+      <input class="form-input" type="tel" placeholder="Phone Number" />
+      <select class="form-select">
+        <option value="" disabled selected>Organisation Type</option>
+        <option>School (Class 1–12)</option>
+        <option>Playschool / Nursery</option>
+        <option>College / University</option>
+        <option>Corporate / Office</option>
+        <option>Residential Society</option>
+        <option>NGO / Trust</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <button class="btn-register">🌿 Book My Green Impact Day — It's Free</button>
+    <p class="form-note">No cost. No obligation. Just impact. We'll contact you within 24 hours.</p>
+  </div>
+
+  <div style="margin-top:80px;display:flex;gap:48px;justify-content:center;flex-wrap:wrap;" class="reveal">
+    <div style="text-align:center;">
+      <div style="font-size:32px;margin-bottom:8px;">🏫</div>
+      <div style="font-size:24px;font-family:'Fraunces',serif;font-weight:900;color:var(--lime);">218+</div>
+      <div style="font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;">Institutions</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:32px;margin-bottom:8px;">📜</div>
+      <div style="font-size:24px;font-family:'Fraunces',serif;font-weight:900;color:var(--lime);">3,241</div>
+      <div style="font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;">Certificates Issued</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:32px;margin-bottom:8px;">🌍</div>
+      <div style="font-size:24px;font-family:'Fraunces',serif;font-weight:900;color:var(--lime);">127T</div>
+      <div style="font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;">CO₂ Prevented</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:32px;margin-bottom:8px;">♻️</div>
+      <div style="font-size:24px;font-family:'Fraunces',serif;font-weight:900;color:var(--lime);">52,847kg</div>
+      <div style="font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;">Waste Recycled</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-brand">
+    🌿 Green Impact
+    <span>An Initiative by Startup Times</span>
+  </div>
+  <div class="footer-right">
+    <div>📧 greenimpact@startuptimes.in</div>
+    <div>📞 +91 98100 XXXXX</div>
+    <div style="margin-top:12px;font-size:11px;">© 2026 Startup Times · All Rights Reserved</div>
+    <div style="margin-top:4px;font-size:11px;color:rgba(255,255,255,0.2);">Built with love for a planet that deserves better.</div>
+  </div>
+</footer>
+
+<script>
+// ── CUSTOM CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cursor.style.transform=`translate(${mx-6}px,${my-6}px)`;
+});
+function animateRing(){
+  rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
+  ring.style.transform=`translate(${rx-18}px,${ry-18}px)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+// ── PARTICLES ──
+const pContainer=document.getElementById('particles');
+for(let i=0;i<25;i++){
+  const p=document.createElement('div');
+  p.classList.add('particle');
+  const size=Math.random()*4+2;
+  p.style.cssText=`
+    width:${size}px;height:${size}px;
+    left:${Math.random()*100}%;
+    animation-duration:${8+Math.random()*12}s;
+    animation-delay:${Math.random()*10}s;
+  `;
+  pContainer.appendChild(p);
+}
+
+// ── SCROLL REVEAL ──
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      obs.unobserve(e.target);
+    }
+  });
+},{threshold:0.1});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>obs.observe(el));
+
+// ── COUNT UP ANIMATION ──
+function animateCount(el,target,duration=2000){
+  let start=null;
+  const formatted=target>=1000;
+  function step(ts){
+    if(!start)start=ts;
+    const progress=Math.min((ts-start)/duration,1);
+    const eased=1-Math.pow(1-progress,4);
+    const val=Math.floor(eased*target);
+    el.textContent=formatted?val.toLocaleString('en-IN'):val;
+    if(progress<1)requestAnimationFrame(step);
+    else el.textContent=target.toLocaleString('en-IN');
+  }
+  requestAnimationFrame(step);
+}
+const countObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const target=parseInt(e.target.dataset.target);
+      animateCount(e.target,target);
+      countObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.5});
+document.querySelectorAll('.count-up').forEach(el=>countObs.observe(el));
+
+// ── STAGGER CHILDREN ──
+document.querySelectorAll('.who-grid .who-card, .levels-row .level-card, .testi-grid .testi-card').forEach((el,i)=>{
+  el.style.transitionDelay=`${i*0.1}s`;
+});
+</script>
+</body>
+</html>
