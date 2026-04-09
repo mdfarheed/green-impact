@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Panel - Green Impact</title>
+
+<style>
+body{
+  font-family:sans-serif;
+  background:#0f1f0f;
+  color:#fff;
+  padding:30px;
+}
+
+/* TABLE */
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:#162d16;
+  border-radius:10px;
+  overflow:hidden;
+}
+th,td{
+  padding:14px;
+  text-align:left;
+}
+th{
+  background:#1f3a1f;
+}
+tr{
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+/* BUTTONS */
+.action-btn{
+  cursor:pointer;
+  margin-right:10px;
+  font-size:18px;
+}
+.view{color:#00ff88;}
+.delete{color:#ff4d4f;}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:0.3s;
+}
+.modal.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.modal-content{
+  background:#1a2e1a;
+  padding:20px;
+  border-radius:10px;
+  width:90%;
+  max-width:400px;
+}
+
+.modal-content h3{
+  margin-bottom:10px;
+}
+
+.modal-buttons{
+  margin-top:20px;
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+}
+
+.btn{
+  padding:8px 14px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.btn-confirm{background:#ff4d4f;color:#fff;}
+.btn-cancel{background:#444;color:#fff;}
+
+</style>
+</head>
+<body>
+
+<h2>🌿 Green Impact Contacts</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody"></tbody>
+</table>
+
+<!-- VIEW MODAL -->
+<div id="viewModal" class="modal">
+  <div class="modal-content">
+    <h3>Contact Details</h3>
+    <p id="viewContent"></p>
+    <div class="modal-buttons">
+      <button class="btn btn-cancel" onclick="closeModal('viewModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE MODAL -->
+<div id="deleteModal" class="modal">
+  <div class="modal-content">
+    <h3>Are you sure?</h3>
+    <p>This contact will be deleted permanently.</p>
+    <div class="modal-buttons">
+      <button class="btn btn-cancel" onclick="closeModal('deleteModal')">Cancel</button>
+      <button class="btn btn-confirm" onclick="confirmDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_URL = "https://common-api.sparkexhibit.com/api/green-impact-contact";
+
+let deleteId = null;
+
+// 🔥 FETCH DATA
+async function fetchData(){
+  const res = await fetch(API_URL);
+  const data = await res.json();
+
+  const table = document.getElementById("tableBody");
+  table.innerHTML = "";
+
+  data.data.forEach(item => {
+    const row = `
+      <tr>
+        <td>${item.name}</td>
+        <td>${item.email}</td>
+        <td>${item.phone}</td>
+        <td>
+          <span class="action-btn view" onclick='viewData(${JSON.stringify(item)})'>👁</span>
+          <span class="action-btn delete" onclick="openDelete('${item._id}')">🗑</span>
+        </td>
+      </tr>
+    `;
+    table.innerHTML += row;
+  });
+}
+
+// 👁 VIEW
+function viewData(item){
+  document.getElementById("viewContent").innerHTML = `
+    <b>Name:</b> ${item.name}<br>
+    <b>Organisation:</b> ${item.organisationName}<br>
+    <b>Email:</b> ${item.email}<br>
+    <b>Phone:</b> ${item.phone}<br>
+    <b>Type:</b> ${item.organisationType}
+  `;
+  openModal("viewModal");
+}
+
+// 🗑 OPEN DELETE
+function openDelete(id){
+  deleteId = id;
+  openModal("deleteModal");
+}
+
+// ❌ CONFIRM DELETE
+async function confirmDelete(){
+  await fetch(API_URL + "/" + deleteId, {
+    method:"DELETE"
+  });
+
+  closeModal("deleteModal");
+  fetchData();
+}
+
+// MODAL CONTROL
+function openModal(id){
+  document.getElementById(id).classList.add("show");
+}
+function closeModal(id){
+  document.getElementById(id).classList.remove("show");
+}
+
+// INIT
+fetchData();
+</script>
+
+</body>
+</html>

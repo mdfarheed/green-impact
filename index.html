@@ -87,12 +87,14 @@ nav{
 
 /* ── HERO ── */
 .hero{
-  min-height:100vh;
-  display:flex;flex-direction:column;
-  justify-content:flex-end;
+  min-height:120vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:end;
   padding:0 48px 80px;
   position:relative;overflow:hidden;
 }
+
 
 /* Animated particle bg */
 .particles{
@@ -190,7 +192,8 @@ h2.big em{font-style:italic;color:var(--lime);}
 .crisis{
   background:var(--deep);
   padding:0;
-  position:relative;overflow:hidden;
+  position:relative;
+  overflow:hidden;
 }
 .crisis-inner{
   max-width:1200px;margin:0 auto;
@@ -278,6 +281,88 @@ h2.big em{font-style:italic;color:var(--lime);}
   margin-top:8px;display:block;
 }
 .is-sub{font-size:12px;color:var(--muted);margin-top:4px;}
+
+
+
+
+/* ── RESPONSIVE FIX ── */
+
+/* Tablet */
+@media (max-width: 992px){
+  .crisis-inner{
+    grid-template-columns:1fr;
+    gap:50px;
+    padding:80px 24px;
+  }
+
+  .crisis-right{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .impact-band-inner{
+    grid-template-columns:repeat(2,1fr);
+    gap:30px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px){
+
+  .crisis-inner{
+    padding:60px 16px;
+  }
+
+   .crisis-card.full{
+    grid-column:span 1; /* 🔥 IMPORTANT */
+  }
+
+  .crisis-left h2{
+    font-size:32px;
+    letter-spacing:-1px;
+  }
+
+  .crisis-left p{
+    font-size:15px;
+  }
+
+  .death-counter{
+    padding:20px;
+  }
+
+  .dc-number{
+    font-size:40px;
+  }
+
+  .crisis-right{
+    grid-template-columns:1fr; /* 🔥 IMPORTANT */
+  }
+
+  .crisis-card{
+    padding:20px;
+  }
+
+  .cc-num{
+    font-size:26px;
+  }
+
+  .cc-text{
+    font-size:12px;
+  }
+
+  .impact-band{
+    padding:60px 16px;
+  }
+
+  .impact-band-inner{
+    grid-template-columns:1fr; /* 🔥 mobile pe single column */
+  }
+
+  .is-num{
+    font-size:36px;
+  }
+}
+
+
 
 /* ── HOW IT WORKS ── */
 .how-grid{
@@ -609,6 +694,72 @@ h2.big em{font-style:italic;color:var(--lime);}
 }
 .form-note::before{content:'🔒';font-size:14px;}
 
+
+/* ── MOBILE PERFECT FIX ── */
+@media (max-width:600px){
+
+  /* Form full width */
+  .cta-form{
+    width:100%;
+    padding:0 8px;
+  }
+
+  /* Har row column ban jayegi */
+  .form-row{
+    flex-direction:column;
+    gap:12px;
+  }
+
+  /* Inputs full width + smaller */
+  .form-input,
+  .form-select{
+    width:100%;
+    min-width:100%;
+    padding:12px 16px;
+    font-size:14px;
+    height:48px;
+  }
+
+  /* Button smaller + fit */
+  .btn-register{
+    width:100%;
+    padding:14px 18px;
+    font-size:14px;
+  }
+
+  /* Heading thoda adjust */
+  .cta-section h2{
+    font-size:32px;
+    letter-spacing:-1px;
+  }
+
+  .cta-section p{
+    font-size:15px;
+    padding:0 10px;
+  }
+
+}
+
+/* ── FORCE STACK LAYOUT (ALL SCREENS) ── */
+
+.form-row{
+  flex-direction:column;
+  align-items:center;
+  width:100%;
+}
+
+.form-input,
+.form-select{
+  width:100%;
+  max-width:500px; /* 🔥 center me clean width */
+}
+
+.btn-register{
+  width:100%;
+  max-width:500px;
+}
+
+
 /* ── FOOTER ── */
 footer{
   background:var(--deep);
@@ -669,7 +820,10 @@ footer{
 /* ── MOBILE ── */
 @media(max-width:900px){
   nav{padding:16px 24px;}
-  .hero{padding:0 24px 60px;}
+  .hero{
+    padding:0 24px 60px;
+    min-height: 90vh;
+  }
   .hero-bottom{flex-direction:column;gap:32px;align-items:flex-start;}
   .hero-stats-mini{text-align:left;}
   .section{padding:80px 24px;}
@@ -693,6 +847,36 @@ footer{
   .levels-row{grid-template-columns:1fr;}
   .impact-band-inner{grid-template-columns:1fr 1fr;}
   .crisis-right{grid-template-columns:1fr;}
+}
+
+
+.custom-alert{
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:#111;
+  color:#fff;
+  padding:14px 20px;
+  border-radius:10px;
+  font-size:14px;
+  z-index:9999;
+  opacity:0;
+  transform:translateY(-20px);
+  transition:all 0.3s ease;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+.custom-alert.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.custom-alert.success{
+  border-left:4px solid #00ff88;
+}
+
+.custom-alert.error{
+  border-left:4px solid #ff4d4f;
 }
 </style>
 </head>
@@ -1049,17 +1233,23 @@ footer{
     <em>Our planet.</em><br>
     One decision.
   </h2>
-  <p class="reveal">Book a Green Impact Day for your school, college, or office — completely free. Join 400+ organisations already making history.</p>
+
+  <p class="reveal">
+    Book a Green Impact Day for your school, college, or office — completely free. Join 400+ organisations already making history.
+  </p>
 
   <div class="cta-form reveal">
+
     <div class="form-row">
-      <input class="form-input" type="text" placeholder="Your Name" />
-      <input class="form-input" type="text" placeholder="Organisation Name" />
+      <input id="name" class="form-input" type="text" placeholder="Your Name" />
+      <input id="orgName" class="form-input" type="text" placeholder="Organisation Name" />
     </div>
+
     <div class="form-row">
-      <input class="form-input" type="email" placeholder="Email Address" />
-      <input class="form-input" type="tel" placeholder="Phone Number" />
-      <select class="form-select">
+      <input id="email" class="form-input" type="email" placeholder="Email Address" />
+      <input id="phone" class="form-input" type="tel" placeholder="Phone Number" />
+
+      <select id="orgType" class="form-select">
         <option value="" disabled selected>Organisation Type</option>
         <option>School (Class 1–12)</option>
         <option>Playschool / Nursery</option>
@@ -1070,31 +1260,14 @@ footer{
         <option>Other</option>
       </select>
     </div>
-    <button class="btn-register">🌿 Book My Green Impact Day — It's Free</button>
-    <p class="form-note">No cost. No obligation. Just impact. We'll contact you within 24 hours.</p>
-  </div>
 
-  <div style="margin-top:80px;display:flex;gap:48px;justify-content:center;flex-wrap:wrap;" class="reveal">
-    <div style="text-align:center;">
-      <div style="font-size:32px;margin-bottom:8px;">🏫</div>
-      <div style="font-size:24px;font-family:'Fraunces',serif;font-weight:900;color:var(--lime);">218+</div>
-      <div style="font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;">Institutions</div>
-    </div>
-    <div style="text-align:center;">
-      <div style="font-size:32px;margin-bottom:8px;">📜</div>
-      <div style="font-size:24px;font-family:'Fraunces',serif;font-weight:900;color:var(--lime);">3,241</div>
-      <div style="font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;">Certificates Issued</div>
-    </div>
-    <div style="text-align:center;">
-      <div style="font-size:32px;margin-bottom:8px;">🌍</div>
-      <div style="font-size:24px;font-family:'Fraunces',serif;font-weight:900;color:var(--lime);">127T</div>
-      <div style="font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;">CO₂ Prevented</div>
-    </div>
-    <div style="text-align:center;">
-      <div style="font-size:32px;margin-bottom:8px;">♻️</div>
-      <div style="font-size:24px;font-family:'Fraunces',serif;font-weight:900;color:var(--lime);">52,847kg</div>
-      <div style="font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;">Waste Recycled</div>
-    </div>
+    <button id="submitBtn" class="btn-register">
+      🌿 Book My Green Impact Day — It's Free
+    </button>
+
+    <p class="form-note">
+      No cost. No obligation. Just impact. We'll contact you within 24 hours.
+    </p>
   </div>
 </div>
 
@@ -1105,12 +1278,16 @@ footer{
     <span>An Initiative by Startup Times</span>
   </div>
   <div class="footer-right">
-    <div>📧 greenimpact@startuptimes.in</div>
-    <div>📞 +91 98100 XXXXX</div>
+    <div>📧 sarfrazkhan416@gmail.com</div>
+    <div>📞 +91 9582118311</div>
     <div style="margin-top:12px;font-size:11px;">© 2026 Startup Times · All Rights Reserved</div>
     <div style="margin-top:4px;font-size:11px;color:rgba(255,255,255,0.2);">Built with love for a planet that deserves better.</div>
   </div>
 </footer>
+
+<div id="customAlert" class="custom-alert">
+  <span id="alertText"></span>
+</div>
 
 <script>
 // ── CUSTOM CURSOR ──
@@ -1185,5 +1362,6 @@ document.querySelectorAll('.who-grid .who-card, .levels-row .level-card, .testi-
   el.style.transitionDelay=`${i*0.1}s`;
 });
 </script>
+<script src="/script.js"></script>
 </body>
 </html>
